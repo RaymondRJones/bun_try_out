@@ -1,20 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, List, ListItem, Paper, TextField, Button, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import './App.css';
 import logo from './assets/flight_app_logo.png'
-const profiles = [
-  { id: 1, name: "John", image: "https://via.placeholder.com/50" },
-  { id: 2, name: "Jane", image: "https://via.placeholder.com/50" },
-  { id: 3, name: "Joe", image: "https://via.placeholder.com/50" }
-];
 
-const initialMessages = [
-  { sender: 0, recipient: 2, text: "Hello, how are you?", type: "sent" },
-  { sender: 2, recipient: 0, text: "I am good, how about you?", type: "received" },
-  { sender: 0, recipient: 1, text: "Paris is the best city", type: "sent" },
-  { sender: 1, recipient: 0, text: "I def agree", type: "received" },
-];
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebase";
 
 function Profile({ profiles, setSelectedProfile }) {
   return (
@@ -44,44 +35,70 @@ function ChatBox({ sender_profile, selectedProfile, messages, setMessages }) {
   const is_sent_message = (message) => {
     return message.sender === sender_profile.id
   };
-  return (
-    <div>
-      <Typography variant="h5">{selectedProfile.name}</Typography>
+  if (selectedProfile) {
+    return (
       <div>
-        {messages.map((message, index) => (
-          <Paper key={index} className="fade-in" style={{
-            backgroundColor: is_sent_message(message) ? "#BBDEFB" : "#F5F5F5",
-            color: is_sent_message(message) ? "#212121" : "#424242", // Darker text for contras
-            margin: "10px",
-            padding: "10px"
-          }}>
-            <Typography variant="body1">{message.text}</Typography>
-          </Paper>
-        ))}
+        <Typography variant="h5">{selectedProfile.name}</Typography>
+        <div>
+          {messages.map((message, index) => (
+            <Paper key={index} className="fade-in" style={{
+              backgroundColor: is_sent_message(message) ? "#BBDEFB" : "#F5F5F5",
+              color: is_sent_message(message) ? "#212121" : "#424242", // Darker text for contras
+              margin: "10px",
+              padding: "10px"
+            }}>
+              <Typography variant="body1">{message.text}</Typography>
+            </Paper>
+          ))}
+        </div>
+        <TextField
+          fullWidth
+          variant="outlined"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Type a message"
+        />
+        <Button variant="contained" color="primary" onClick={sendMessage}>Send</Button>
       </div>
-      <TextField
-        fullWidth
-        variant="outlined"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Type a message"
-      />
-      <Button variant="contained" color="primary" onClick={sendMessage}>Send</Button>
-    </div>
-  );
+    );
+  }
+  else {
+    return <p>Waiting for response..</p>
+  }
 }
 
 function HomeScreen() {
-  const [messages, setMessages] = useState(initialMessages);
-  const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+  const [messages, setMessages] = useState([]);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [profiles, setProfiles] = useState([]);
   const [usersProfile, setUsersProfile] = useState({name: "ray", id: 0, image: "https://via.placeholder.com/50"});
   const clearMessages = () => {
     setMessages([]); // this will set messages to an empty array
   };
   const filteredMessages = messages.filter(
-    msg => (msg.sender === usersProfile.id && msg.recipient === selectedProfile.id) || 
-    (msg.sender === selectedProfile.id && msg.recipient === usersProfile.id)
+    msg => selectedProfile && (
+      (msg.sender === usersProfile.id && msg.recipient === selectedProfile.id) || 
+      (msg.sender === selectedProfile.id && msg.recipient === usersProfile.id)
+    )
   );
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const profilesCollection = collection(db, "profiles");
+      const profileSnapshot = await getDocs(profilesCollection);
+      const profileList = profileSnapshot.docs.map(doc => doc.data());
+      setProfiles(profileList);  // populate the state with data fetched
+      setSelectedProfile(profileList[0])
+      const messagesCollection = collection(db, "messages");
+      const messagesSnapshot = await getDocs(messagesCollection);
+      const messagesList = messagesSnapshot.docs.map(doc => doc.data());
+      setMessages(messagesList); // populate the state with data fetched
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <img src={logo} alt="App logo" style={{width: '140px'}} />
