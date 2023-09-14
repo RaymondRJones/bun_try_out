@@ -16,7 +16,7 @@ function Profile({profiles, setSelectedProfile }) {
           button
           onClick={() => setSelectedProfile(profile)}
         >
-          <Avatar src={profile.image} />
+          <Avatar src={profile.image} style={{ width: '100px', height: '100px' }} />
           <Typography variant="body1">{profile.name}</Typography>
         </ListItem>
       ))}
@@ -51,14 +51,14 @@ function ChatBox({ sender_profile, selectedProfile, messages, setMessages }) {
         <Typography variant="h5">Chatting with: {selectedProfile.name}</Typography>
         <div>
           {messages.map((message, index) => (
-            <Paper key={index} className="fade-in" style={{
+            <Paper key={index} elevation={2} className="fade-in" style={{
               backgroundColor: is_sent_message(message) ? "#BBDEFB" : "#F5F5F5",
-              color: is_sent_message(message) ? "#212121" : "#424242", // Darker text for contras
               margin: "10px",
               padding: "10px"
             }}>
               <Typography variant="body1">{message.text}</Typography>
             </Paper>
+
           ))}
         </div>
         <TextField
@@ -130,26 +130,32 @@ function HomeScreen() {
 
   return (
     <div>
-      <img src={logo} alt="App logo" style={{width: '140px'}} />
-      <Typography variant="h4">Flight: Chat Application</Typography>
+     <Grid container alignItems="center" justify="space-between">
+      <Grid item>
+        <img src={logo} alt="App logo" style={{ width: '140px' }} />
+        <Typography variant="h4">Flight: Chat Application</Typography>
+      </Grid>
+      <Grid item>
+      </Grid>
+    </Grid>
       <Grid container spacing={3}>
         <Grid item xs={3}> {/* Profile section */}
           <Profile profiles={filteredProfiles} setSelectedProfile={setSelectedProfile} />
         </Grid>
         <Grid item xs={9}> {/* ChatBox section */}
           <ChatBox sender_profile={usersProfile} selectedProfile={selectedProfile} messages={filteredMessages} setMessages={setMessages} />
-          <TextField
-          value={passphrase}
-          onChange={(e) => setPassphrase(e.target.value)}
-          placeholder="Enter your passphrase"
-        />
-        <Button variant="contained" color="primary" onClick={handleLogin}>
-          Login
-        </Button>
         </Grid>
 
       </Grid>
-      <Button variant="contained" color="secondary" onClick={clearMessages}>Clear Messages</Button>
+      <TextField
+          value={passphrase}
+          onChange={(e) => setPassphrase(e.target.value)}
+          placeholder="Enter password"
+          size="small"
+        />
+      <Button variant="contained" color="primary" onClick={handleLogin} size="small">
+        Login
+      </Button>
     </div>
   );
 }
@@ -157,7 +163,13 @@ function HomeScreen() {
 function App() {
   return (
     <div className="App">
-      <HomeScreen />
+      <Grid container style={{ padding: '20px' }}>
+        <Grid item xs={12} style={{ marginBottom: '20px' }}>
+          <Paper elevation={3} className="chat-container">
+            <HomeScreen />
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -1,10 +1,16 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+.App {
+  background-color: #f1f1f1; /* Or any other light grey color */
+  min-height: 100vh;
+}
+
+.chat-container {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
