@@ -4,10 +4,10 @@ import { Grid } from '@mui/material';
 import './App.css';
 import logo from './assets/flight_app_logo.png'
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
-function Profile({ profiles, setSelectedProfile }) {
+function Profile({profiles, setSelectedProfile }) {
   return (
     <List>
       {profiles.map((profile) => (
@@ -26,19 +26,29 @@ function Profile({ profiles, setSelectedProfile }) {
 
 function ChatBox({ sender_profile, selectedProfile, messages, setMessages }) {
   const [newMessage, setNewMessage] = useState("");
-
-  const sendMessage = () => {
-    const new_message = { sender: sender_profile.id, recipient: selectedProfile.id, text: newMessage, type: "sent" };
-    setMessages([...messages, new_message]);
-    setNewMessage('');
+  const sendMessage = async () => {
+    const timestamp = new Date().toISOString();
+    const new_message = { sender: sender_profile.id, recipient: selectedProfile.id, text: newMessage, timestamp};
+    await addDoc(collection(db, "messages"), new_message);
+    setMessages([...messages, new_message]); 
+    setNewMessage("");
   };
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'messages'), (snapshot) => {
+      const newMessages = snapshot.docs.map((doc) => doc.data());
+      const sortedMessages = newMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); // Sorting by date
+      setMessages(sortedMessages);
+    });
+  
+    return () => unsubscribe();
+  }, []);
   const is_sent_message = (message) => {
     return message.sender === sender_profile.id
   };
-  if (selectedProfile) {
+  if (selectedProfile && sender_profile) {
     return (
       <div>
-        <Typography variant="h5">{selectedProfile.name}</Typography>
+        <Typography variant="h5">Chatting with: {selectedProfile.name}</Typography>
         <div>
           {messages.map((message, index) => (
             <Paper key={index} className="fade-in" style={{
@@ -57,6 +67,12 @@ function ChatBox({ sender_profile, selectedProfile, messages, setMessages }) {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {  // Checks if Enter key is pressed and Shift is not held down
+              e.preventDefault(); // Prevents a new line being added in the TextField
+              sendMessage(); // Send the message
+            }
+          }}
         />
         <Button variant="contained" color="primary" onClick={sendMessage}>Send</Button>
       </div>
@@ -71,12 +87,25 @@ function HomeScreen() {
   const [messages, setMessages] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [profiles, setProfiles] = useState([]);
-  const [usersProfile, setUsersProfile] = useState({name: "ray", id: 0, image: "https://via.placeholder.com/50"});
+  const [usersProfile, setUsersProfile] = useState(null);
+  const [passphrase, setPassphrase] = useState("");
+  
+  const handleLogin = () => {
+    // Function to search profiles for the passphrase and set user's profile
+    const matchingProfile = profiles.find(profile => profile.passphrase === passphrase);
+    if (matchingProfile) {
+      setUsersProfile(matchingProfile);
+    } else {
+      alert("Incorrect passphrase!");
+    }
+  };
+  
   const clearMessages = () => {
     setMessages([]); // this will set messages to an empty array
   };
+  const filteredProfiles = profiles.filter(profile => usersProfile && profile.id !== usersProfile.id);
   const filteredMessages = messages.filter(
-    msg => selectedProfile && (
+    msg => usersProfile && selectedProfile && (
       (msg.sender === usersProfile.id && msg.recipient === selectedProfile.id) || 
       (msg.sender === selectedProfile.id && msg.recipient === usersProfile.id)
     )
@@ -105,11 +134,20 @@ function HomeScreen() {
       <Typography variant="h4">Flight: Chat Application</Typography>
       <Grid container spacing={3}>
         <Grid item xs={3}> {/* Profile section */}
-          <Profile profiles={profiles} setSelectedProfile={setSelectedProfile} />
+          <Profile profiles={filteredProfiles} setSelectedProfile={setSelectedProfile} />
         </Grid>
         <Grid item xs={9}> {/* ChatBox section */}
           <ChatBox sender_profile={usersProfile} selectedProfile={selectedProfile} messages={filteredMessages} setMessages={setMessages} />
+          <TextField
+          value={passphrase}
+          onChange={(e) => setPassphrase(e.target.value)}
+          placeholder="Enter your passphrase"
+        />
+        <Button variant="contained" color="primary" onClick={handleLogin}>
+          Login
+        </Button>
         </Grid>
+
       </Grid>
       <Button variant="contained" color="secondary" onClick={clearMessages}>Clear Messages</Button>
     </div>
