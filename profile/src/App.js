@@ -1,115 +1,99 @@
 import React, { useState } from 'react';
+import { Avatar, List, ListItem, Paper, TextField, Button, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import './App.css';
+import logo from './assets/flight_app_logo.png'
+const profiles = [
+  { id: 1, name: "John", image: "https://via.placeholder.com/50" },
+  { id: 2, name: "Jane", image: "https://via.placeholder.com/50" }
+];
 
-// Utility functions for validation
-const validateEmail = (email) => {
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(String(email).toLowerCase());
-};
+const initialMessages = [
+  { sender: 1, recipient: 2, text: "Hello, how are you?", type: "sent" },
+  { sender: 2, recipient: 1, text: "I am good, how about you?", type: "received" }
+];
 
-const validateName = (name) => {
-  return /^[a-zA-Z\s]+$/.test(name);
-};
-
-// StepSettings component
-const StepSettings = ({ name, email, label, updateParent }) => {
+function Profile({ profiles, setSelectedProfile }) {
+  const setProfile = () => {
+    return;
+  };
   return (
-    <div>
-      <h4>Step Settings</h4>
-      <p>Name: {name}</p>
-      <p>Email: {email}</p>
-      <p>Label: {label}</p>
-      <button onClick={() => updateParent({ /* updated info */ })}>
-        Add Recipient
-      </button>
-    </div>
-  );
-};
-
-// StepsComponent
-const StepsComponent = ({ step, index, removeStep, toggleStepSettings, updateParent }) => {
-  const { name, email, label } = step;
-  const [isValid, setIsValid] = useState(true);
-
-  const validate = () => {
-    if (validateName(name) && validateEmail(email)) {
-      setIsValid(true);
-      updateParent(true);
-    } else {
-      setIsValid(false);
-      updateParent(false);
-    }
-  };
-
-  return (
-    <div>
-      <h3>Step {index + 1}</h3>
-      <p>Name: {name}</p>
-      <p>Email: {email}</p>
-      <button onClick={() => removeStep(index)}>Remove</button>
-      <button onClick={() => toggleStepSettings(index)}>Settings</button>
-      {isValid ? "Valid" : "Invalid"}
-      <button onClick={validate}>Validate</button>
-    </div>
-  );
-};
-
-// RouteBuilder
-const RouteBuilder = () => {
-  const [steps, setSteps] = useState([
-    { name: 'John', email: 'john@example.com', label: 'Step 1' },
-    // Add more steps as needed
-  ]);
-  const [isValid, setIsValid] = useState(true);
-
-  const updateStepValid = (stepIsValid) => {
-    setIsValid(stepIsValid);
-  };
-
-  const removeStep = (index) => {
-    const newSteps = [...steps];
-    newSteps.splice(index, 1);
-    setSteps(newSteps);
-  };
-
-  const toggleStepSettings = (index) => {
-    // Logic to toggle settings
-  };
-
-  const updateParent = (updatedInfo) => {
-    // Logic to update step with new recipient, settings, etc.
-  };
-
-  return (
-    <div>
-      <h2>Route Builder</h2>
-      {steps.map((step, index) => (
-        <StepsComponent
-          key={index}
-          step={step}
-          index={index}
-          removeStep={removeStep}
-          toggleStepSettings={toggleStepSettings}
-          updateParent={updateStepValid}
-        />
+    <List>
+      {profiles.map((profile) => (
+        <ListItem key={profile.id}>
+          <Avatar src={profile.image} />
+          <Typography variant="body1">{profile.name}</Typography>
+        </ListItem>
       ))}
-      <button disabled={!isValid}>Continue / Submit</button>
+    </List>
+  );
+}
+
+function ChatBox({ selectedProfile, messages, setMessages }) {
+  const [newMessage, setNewMessage] = useState("");
+
+  const sendMessage = () => {
+    const new_message = { sender: 1, recipient: 2, text: newMessage, type: "sent" };
+    setMessages([...messages, new_message]);
+    setNewMessage('');
+  };
+
+  return (
+    <div>
+      <Typography variant="h5">{selectedProfile.name}</Typography>
+      <div>
+        {messages.map((message, index) => (
+          <Paper key={index} className="fade-in" style={{
+            backgroundColor: message.type === "sent" ? "blue" : "grey",
+            color: "white",
+            margin: "10px",
+            padding: "10px"
+          }}>
+            <Typography variant="body1">{message.text}</Typography>
+          </Paper>
+        ))}
+      </div>
+      <TextField
+        fullWidth
+        variant="outlined"
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
+        placeholder="Type a message"
+      />
+      <Button variant="contained" color="primary" onClick={sendMessage}>Send</Button>
     </div>
   );
-};
+}
 
-export default RouteBuilder;
+function HomeScreen() {
+  const [messages, setMessages] = useState(initialMessages);
+  const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+  const clearMessages = () => {
+    setMessages([]); // this will set messages to an empty array
+  };
+  return (
+    <div>
+      <img src={logo} alt="App logo" style={{width: '140px'}} />
+      <Typography variant="h4">Flight: Chat Application</Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={3}> {/* Profile section */}
+          <Profile profiles={profiles} setProfile={setSelectedProfile} />
+        </Grid>
+        <Grid item xs={9}> {/* ChatBox section */}
+          <ChatBox selectedProfile={selectedProfile} messages={messages} setMessages={setMessages} />
+        </Grid>
+      </Grid>
+      <Button variant="contained" color="secondary" onClick={clearMessages}>Clear Messages</Button>
+    </div>
+  );
+}
 
-
-/*
 function App() {
   return (
     <div className="App">
-      <Button variant="contained" color="primary">
-        Click Me
-      </Button>
+      <HomeScreen />
     </div>
   );
 }
 
 export default App;
-*/
