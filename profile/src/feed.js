@@ -14,64 +14,7 @@ import ChatIcon from '@mui/icons-material/Chat'; // For Messages
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CreateIcon from '@mui/icons-material/Create';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // For Profile
-
-
-
-const photos = [
-    {
-      caption: "Beautiful Sunset",
-      photoUrl: "https://images.pexels.com/photos/18332033/pexels-photo-18332033/free-photo-of-snow-sea-road-landscape.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Amazing!", "Wow!", "Love it!"],
-      profile: {
-        username: "john_doe",
-        fullName: "John Doe",
-        avatarUrl: "path/to/john_doe_avatar.jpg",
-      },
-    },
-    {
-      caption: "Adorable Puppy",
-      photoUrl: "https://images.pexels.com/photos/10821195/pexels-photo-10821195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Adorable!", "I want one!", "So fluffy!"],
-      profile: {
-        username: "jane_smith",
-        fullName: "Jane Smith",
-        avatarUrl: "path/to/jane_smith_avatar.jpg",
-      },
-    },
-    {
-      caption: "Delicious Meal",
-      photoUrl: "https://images.pexels.com/photos/17435121/pexels-photo-17435121/free-photo-of-eyeglasses-next-to-a-cup-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Yum!", "Recipe please!", "Food goals!"],
-      profile: {
-        username: "alice_wonderland",
-        fullName: "Alice Wonderland",
-        avatarUrl: "path/to/alice_wonderland_avatar.jpg",
-      },
-    },
-  ];
-
-const profiles = [
-{
-    username: "Radical56",
-    photo: "https://images.pexels.com/photos/18238186/pexels-photo-18238186/free-photo-of-young-woman-sitting-in-an-armchair-in-a-modern-room.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-},
-{
-    username: "CookingSpagetti",
-    photo: "https://images.pexels.com/photos/14510065/pexels-photo-14510065.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-},
-{
-    username: "Kelly_3",
-    photo: "https://images.pexels.com/photos/17923001/pexels-photo-17923001/free-photo-of-woman-holding-book-on-face.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-},
-{
-    username: "user4",
-    photo: "https://images.pexels.com/photos/5155733/pexels-photo-5155733.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-},
-{
-    username: "Horses50",
-    photo: "https://images.pexels.com/photos/18417020/pexels-photo-18417020/free-photo-of-feeling-series.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-},
-];
+import { photos, profiles } from './constants';
 
 // Logged In User Profile Component
 const LoggedInUserProfile = ({profile}) => {
@@ -181,7 +124,7 @@ const Photo = ({photo, profile}) => {
 const Stories = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-          {profiles.slice(0, 3).map((profile, index) => (
+          {profiles.slice(0, 6).map((profile, index) => (
             <div 
               key={index} 
               style={{ 
@@ -213,6 +156,15 @@ const Stories = () => {
 
 // Main App Component that includes all the above components
 const InstagramScreen = () => {
+    useEffect(() => {
+        // Set the title when the component mounts
+        document.title = 'Instagram';
+        
+        // Optionally, you can also reset the title when the component unmounts
+        return () => {
+          document.title = 'Original Title';
+        };
+      }, []);
     // Call API to get a list of this user's friends
 
     // Call API to get photos / posts of all the friends
@@ -220,7 +172,7 @@ const InstagramScreen = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <div style={{ width: '200%' }}>
-                <LoggedInUserProfile profile={profiles[4]}/>
+                <LoggedInUserProfile profile={profiles[6]}/>
                 <NewsFeedScreen />
                 <Stories profiles={profiles} />
                 {photos.map((photo, index) => (
@@ -232,7 +184,7 @@ const InstagramScreen = () => {
                     />
                 ))}
             </div>
-            <Profile profile={profiles[4]}/>
+            <Profile profile={profiles[6]}/>
         </div>
     );
 };
