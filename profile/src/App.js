@@ -26,6 +26,7 @@ function Profile({profiles, setSelectedProfile }) {
 
 function ChatBox({ sender_profile, selectedProfile, messages, setMessages }) {
   const [newMessage, setNewMessage] = useState("");
+
   const sendMessage = async () => {
     const timestamp = new Date().toISOString();
     const new_message = { sender: sender_profile.id, recipient: selectedProfile.id, text: newMessage, timestamp};
@@ -33,6 +34,7 @@ function ChatBox({ sender_profile, selectedProfile, messages, setMessages }) {
     setMessages([...messages, new_message]); 
     setNewMessage("");
   };
+  
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'messages'), (snapshot) => {
       const newMessages = snapshot.docs.map((doc) => doc.data());
