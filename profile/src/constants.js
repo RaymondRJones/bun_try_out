@@ -3,6 +3,7 @@ const photos = [
       caption: "Beautiful Sunset",
       photoUrl: "https://images.pexels.com/photos/18332033/pexels-photo-18332033/free-photo-of-snow-sea-road-landscape.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Amazing!", "Wow!", "Love it!"],
+      likeCount: 105,
       profile: {
         username: "john_doe",
         fullName: "John Doe",
@@ -13,6 +14,7 @@ const photos = [
       caption: "Adorable Puppy",
       photoUrl: "https://images.pexels.com/photos/10821195/pexels-photo-10821195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Adorable!", "I want one!", "So fluffy!"],
+      likeCount: 52,
       profile: {
         username: "jane_smith",
         fullName: "Jane Smith",
@@ -23,6 +25,7 @@ const photos = [
       caption: "Delicious Meal",
       photoUrl: "https://images.pexels.com/photos/17435121/pexels-photo-17435121/free-photo-of-eyeglasses-next-to-a-cup-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Yum!", "Recipe please!", "Food goals!"],
+      likeCount: 307,
       profile: {
         username: "alice_wonderland",
         fullName: "Alice Wonderland",
@@ -33,6 +36,7 @@ const photos = [
       caption: "Serenity by the Lake",
       photoUrl: "https://images.pexels.com/photos/2649403/pexels-photo-2649403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Tranquil!", "Peaceful!", "Nature's beauty!"],
+      likeCount: 23,
       profile: {
         username: "nature_lover",
         fullName: "Nature Lover",
@@ -43,6 +47,7 @@ const photos = [
       caption: "City Lights at Dusk",
       photoUrl: "https://images.pexels.com/photos/219692/pexels-photo-219692.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Gorgeous view!", "City vibes!", "Evening delight!"],
+      likeCount: 34,
       profile: {
         username: "city_explorer",
         fullName: "City Explorer",
@@ -53,6 +58,7 @@ const photos = [
       caption: "Sunrise Over the Mountains",
       photoUrl: "https://images.pexels.com/photos/3601426/pexels-photo-3601426.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Breath-taking!", "Morning glory!", "Mountain magic!"],
+      likeCount: 84,
       profile: {
         username: "mountain_hiker",
         fullName: "Mountain Hiker",
@@ -63,6 +69,7 @@ const photos = [
       caption: "Cozy Winter Evening",
       photoUrl: "https://images.pexels.com/photos/373893/pexels-photo-373893.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       comments: ["Cozy vibes!", "Fireplace warmth!", "Snowy night!"],
+      likeCount: 53,
       profile: {
         username: "winter_wonder",
         fullName: "Winter Wonder",
@@ -73,6 +80,7 @@ const photos = [
         caption: "Epic Mountain Adventure",
         photoUrl: "https://images.pexels.com/photos/3273185/pexels-photo-3273185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         comments: ["Incredible!", "Adventure awaits!", "Nature's playground!"],
+        likeCount: 78,
         profile: {
           username: "mountain_adventurer",
           fullName: "Mountain Adventurer",
@@ -83,6 +91,7 @@ const photos = [
         caption: "Sunset on the Beach",
         photoUrl: "https://images.pexels.com/photos/340874/pexels-photo-340874.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         comments: ["Golden hour!", "Beach vibes!", "Relaxation time!"],
+        likeCount: 91,
         profile: {
           username: "beach_lover",
           fullName: "Beach Lover",
@@ -93,6 +102,7 @@ const photos = [
         caption: "Artistic Coffee Break",
         photoUrl: "https://images.pexels.com/photos/1323559/pexels-photo-1323559.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         comments: ["Creative!", "Coffee art!", "Inspiration in a cup!"],
+        likeCount: 88,
         profile: {
           username: "coffee_artist",
           fullName: "Coffee Artist",

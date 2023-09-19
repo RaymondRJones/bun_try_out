@@ -84,9 +84,12 @@ const Profile = ({profile}) => {
 
 // Photo Component
 const Photo = ({photo, profile}) => {
+    const [likeCount, setLikeCount] = useState(photo.likeCount || 0); // Initialize with photo.likeCount
+
     const [isLiked, setIsLiked] = useState(false);
     function toggleLiked() {
         setIsLiked(!isLiked)
+        setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     }
     return (
         <Box sx={{ maxWidth: '33%', margin: 'auto' }}>
@@ -114,6 +117,10 @@ const Photo = ({photo, profile}) => {
                             <FavoriteBorderIcon />
                             ) }
                     </IconButton>
+
+                    <Typography variant="body2" color="text.secondary">
+                        {likeCount} {likeCount === 1 ? 'like' : 'likes'}
+                    </Typography>
                 </CardActions>
             </Card>
         </Box>
