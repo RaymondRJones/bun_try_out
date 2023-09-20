@@ -15,6 +15,28 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import CreateIcon from '@mui/icons-material/Create';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // For Profile
 import { photos, profiles } from './constants';
+import TextField from '@mui/material/TextField';
+
+const Comment = ({ comment }) => {
+  const [likeCounter, setLikeCounter] = useState(0);
+  const [isCommentLiked, setIsCommentLiked] = useState(false);
+
+  const toggleCommentLiked = () => {
+    setIsCommentLiked(!isCommentLiked);
+    setLikeCounter(isCommentLiked ? likeCounter - 1 : likeCounter + 1);
+  };
+
+  return (
+    <Box display="flex" alignItems="center" justifyContent="space-between">
+      <Typography variant="body2">
+        <strong>{comment.profile.username}</strong> {comment.message}
+      </Typography>
+      <IconButton aria-label="like comment" size="small" onClick={toggleCommentLiked}>
+        {isCommentLiked ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
+      </IconButton>
+    </Box>
+  );
+};
 
 // Logged In User Profile Component
 const LoggedInUserProfile = ({profile}) => {
@@ -85,12 +107,33 @@ const Profile = ({profile}) => {
 // Photo Component
 const Photo = ({photo, profile}) => {
     const [likeCount, setLikeCount] = useState(photo.likeCount || 0); // Initialize with photo.likeCount
+    const [newComment, setNewComment] = useState('');
+    const [comments, setComments] = useState(photo.comments || []);
+    const [showAllComments, setShowAllComments] = useState(false);
 
+    const handleNewCommentChange = (e) => {
+        setNewComment(e.target.value);
+    };
+
+    const handleAddComment = (e) => {
+        if (e.key === 'Enter') {
+            const addedComment = {
+                profile: { username: 'city_dude', /* other profile info */ },
+                message: newComment,
+            };
+
+            setComments([...comments, addedComment]);
+            console.log(comments)
+            setNewComment('');
+        }
+    };
     const [isLiked, setIsLiked] = useState(false);
     function toggleLiked() {
         setIsLiked(!isLiked)
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     }
+    const displayedComments = showAllComments ? comments : comments.slice(0, 2);
+    
     return (
         <Box sx={{ maxWidth: '33%', margin: 'auto' }}>
             <Card>
@@ -108,6 +151,48 @@ const Photo = ({photo, profile}) => {
                     <Typography variant="body2" color="text.secondary">
                         {photo.caption}
                     </Typography>
+                    {photo.comments && photo.comments.length > 0 ? (
+                      displayedComments.map((comment, index) => (
+                        <Comment
+                            key={index}
+                            comment={comment}
+                        />
+                      ))
+                    ): (
+                      <Typography onClick={() => setShowAllComments(true)} variant="body2" color="text.secondary">
+                        No comments yet.
+                      </Typography>
+                      )
+                    }
+                    {comments.length > 2 && !showAllComments && (
+                        <Typography 
+                        onClick={() => setShowAllComments(true)} 
+                        variant="body2" 
+                        color="text.secondary" 
+                        style={{ cursor: 'pointer' }}
+                      >
+                        View all {comments.length} comments
+                      </Typography>
+                    )}
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      variant="standard"
+                      placeholder="Add a comment..."
+                      value={newComment}
+                      onChange={handleNewCommentChange}
+                      onKeyDown={handleAddComment}
+                      InputProps={{
+                        disableUnderline: true,
+                        style: {
+                          border: 'none',
+                          fontSize: '0.875rem', // This should be similar to the Material-UI's body2 typography
+                        },
+                      }}
+                    />
+
+                    
+
                 </CardContent>
                 <CardActions disableSpacing>
 

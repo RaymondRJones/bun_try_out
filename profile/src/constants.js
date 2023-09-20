@@ -2,7 +2,32 @@ const photos = [
     {
       caption: "Beautiful Sunset",
       photoUrl: "https://images.pexels.com/photos/18332033/pexels-photo-18332033/free-photo-of-snow-sea-road-landscape.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Amazing!", "Wow!", "Love it!"],
+      comments: [
+        {
+          profile: {
+            username: "nature_lover",
+            fullName: "Nature Lover",
+            avatarUrl: "https://images.pexels.com/photos/2649403/pexels-photo-2649403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          },
+          message: "Amazing!"
+        },
+        {
+          profile: {
+            username: "sunset_chaser",
+            fullName: "Sunset Chaser",
+            avatarUrl: "path/to/sunset_chaser_avatar.jpg",
+          },
+          message: "Wow!"
+        },
+        {
+          profile: {
+            username: "beach_goer",
+            fullName: "Beach Goer",
+            avatarUrl: "path/to/beach_goer_avatar.jpg",
+          },
+          message: "Love it!"
+        }
+      ],
       likeCount: 105,
       profile: {
         username: "john_doe",
@@ -13,7 +38,7 @@ const photos = [
     {
       caption: "Adorable Puppy",
       photoUrl: "https://images.pexels.com/photos/10821195/pexels-photo-10821195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Adorable!", "I want one!", "So fluffy!"],
+      comments: [],
       likeCount: 52,
       profile: {
         username: "jane_smith",
@@ -24,7 +49,7 @@ const photos = [
     {
       caption: "Delicious Meal",
       photoUrl: "https://images.pexels.com/photos/17435121/pexels-photo-17435121/free-photo-of-eyeglasses-next-to-a-cup-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Yum!", "Recipe please!", "Food goals!"],
+      comments: [],
       likeCount: 307,
       profile: {
         username: "alice_wonderland",
@@ -35,7 +60,7 @@ const photos = [
     {
       caption: "Serenity by the Lake",
       photoUrl: "https://images.pexels.com/photos/2649403/pexels-photo-2649403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Tranquil!", "Peaceful!", "Nature's beauty!"],
+      comments: [],
       likeCount: 23,
       profile: {
         username: "nature_lover",
@@ -46,7 +71,7 @@ const photos = [
     {
       caption: "City Lights at Dusk",
       photoUrl: "https://images.pexels.com/photos/219692/pexels-photo-219692.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Gorgeous view!", "City vibes!", "Evening delight!"],
+      comments: [],
       likeCount: 34,
       profile: {
         username: "city_explorer",
@@ -57,7 +82,7 @@ const photos = [
     {
       caption: "Sunrise Over the Mountains",
       photoUrl: "https://images.pexels.com/photos/3601426/pexels-photo-3601426.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Breath-taking!", "Morning glory!", "Mountain magic!"],
+      comments: [],
       likeCount: 84,
       profile: {
         username: "mountain_hiker",
@@ -68,7 +93,7 @@ const photos = [
     {
       caption: "Cozy Winter Evening",
       photoUrl: "https://images.pexels.com/photos/373893/pexels-photo-373893.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      comments: ["Cozy vibes!", "Fireplace warmth!", "Snowy night!"],
+      comments: [],
       likeCount: 53,
       profile: {
         username: "winter_wonder",
@@ -79,7 +104,7 @@ const photos = [
     {
         caption: "Epic Mountain Adventure",
         photoUrl: "https://images.pexels.com/photos/3273185/pexels-photo-3273185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        comments: ["Incredible!", "Adventure awaits!", "Nature's playground!"],
+        comments: [],
         likeCount: 78,
         profile: {
           username: "mountain_adventurer",
@@ -90,7 +115,7 @@ const photos = [
       {
         caption: "Sunset on the Beach",
         photoUrl: "https://images.pexels.com/photos/340874/pexels-photo-340874.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        comments: ["Golden hour!", "Beach vibes!", "Relaxation time!"],
+        comments: [],
         likeCount: 91,
         profile: {
           username: "beach_lover",
@@ -101,7 +126,7 @@ const photos = [
       {
         caption: "Artistic Coffee Break",
         photoUrl: "https://images.pexels.com/photos/1323559/pexels-photo-1323559.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        comments: ["Creative!", "Coffee art!", "Inspiration in a cup!"],
+        comments: [],
         likeCount: 88,
         profile: {
           username: "coffee_artist",
